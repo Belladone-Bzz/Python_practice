@@ -1,0 +1,27 @@
+[project]
+name = "loading"
+version = "0.1.0"
+description = "This program create a clean, isolated Python virtual environment."
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib (>=3.10.9,<4.0.0)",
+    "numpy (>=2.4.4,<3.0.0)",
+    "pandas (>=3.0.2,<4.0.0)",
+    "requests (>=2.33.1,<3.0.0)"
+]
+
+[dependency-groups]
+dev = [
+    "matplotlib (>=3.10.9,<4.0.0)",
+    "numpy (>=2.4.4,<3.0.0)",
+    "pandas (>=3.0.2,<4.0.0)",
+    "requests (>=2.33.1,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
