@@ -8,6 +8,7 @@ simulated space station. It helps me to learn basic Pydantic model creation
 with BaseModel and Field validation.
 """
 from typing import Optional
+from datetime import datetime
 
 
 try:
@@ -26,7 +27,8 @@ class Station(BaseModel):
     crew_size: int = Field(..., ge=1, le=20)
     power_level: float = Field(..., ge=0.0, le=100.0)
     oxygen_level: float = Field(..., ge=0.0, le=100.0)
-    last_maintenance: bool = Field(default=True)
+    last_maintenance: datetime
+    is_operational: bool = Field(default=True)
     notes: Optional[str] = Field(default=None, max_length=200)
 
     def __str__(self) -> str:
@@ -36,7 +38,8 @@ class Station(BaseModel):
             f"Name: {self.name}\n"
             f"Crew: {self.crew_size} people\n"
             f"Power: {self.power_level}%\n"
-            f"Oxygen: {self.oxygen_level}%")
+            f"Oxygen: {self.oxygen_level}%\n"
+            f"Last maintenance: {self.last_maintenance}")
 
 
 def main() -> None:
@@ -48,9 +51,10 @@ def main() -> None:
         name="International Space Station",
         crew_size=6,
         power_level=85.5,
-        oxygen_level=92.3
+        oxygen_level=92.3,
+        last_maintenance=datetime.now()
     )
-    if station.last_maintenance is True:
+    if station.is_operational is True:
         status: str = "Operational"
     else:
         status = "Maintenance Required"
@@ -66,12 +70,9 @@ def main() -> None:
             name="Invalid Station",
             crew_size=22,
             power_level=85.5,
-            oxygen_level=92.3
+            oxygen_level=92.3,
+            last_maintenance=datetime.now()
         )
-        if station.last_maintenance is True:
-            status = "Operational"
-        else:
-            status = "Maintenance Required"
     except ValidationError as error:
         print(error.errors()[0]["msg"])
 

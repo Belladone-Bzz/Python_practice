@@ -11,7 +11,7 @@ from enum import Enum
 
 
 try:
-    from pydantic import BaseModel, Field, model_validator
+    from pydantic import BaseModel, Field, model_validator, ValidationError
 except ImportError:
     print("\n[ERROR]: pydantic is not available. Run the command:")
     print("pip install pydantic")
@@ -19,7 +19,7 @@ except ImportError:
     exit()
 
 
-class Rank(Enum):
+class Rank(str, Enum):
     """Enumeration for type of crew member rank."""
     CADET = "cadet"
     OFFICER = "officer"
@@ -133,7 +133,7 @@ def main() -> None:
                     member_id="CM002", name="Alice Johnson",
                     rank=Rank.OFFICER, age=51,
                     specialization="Engineering", years_experience=12)])
-    except ValueError as error:
+    except ValidationError as error:
         print(error.errors()[0]["ctx"]["error"])
 
 

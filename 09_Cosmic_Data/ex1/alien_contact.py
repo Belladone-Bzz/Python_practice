@@ -12,7 +12,7 @@ from typing import Optional
 
 
 try:
-    from pydantic import BaseModel, Field, model_validator
+    from pydantic import BaseModel, Field, model_validator, ValidationError
 except ImportError:
     print("\n[ERROR]: pydantic is not available. Run the command:")
     print("pip install pydantic")
@@ -20,12 +20,12 @@ except ImportError:
     exit()
 
 
-class ContactType(Enum):
+class ContactType(str, Enum):
     """Enumeration for type of alien contact."""
-    RADIO = 0
-    VISUAL = 1
-    PHYSICAL = 2
-    TELEPATHIC = 3
+    RADIO = "radio"
+    VISUAL = "visual"
+    PHYSICAL = "physical"
+    TELEPATHIC = "telepathic"
 
 
 class AlienContact(BaseModel):
@@ -99,7 +99,7 @@ def main() -> None:
             witness_count=2,
             message_received="Greetings from PythonPlanet"
         )
-    except ValueError as error:
+    except ValidationError as error:
         print(error.errors()[0]["ctx"]["error"])
 
 
