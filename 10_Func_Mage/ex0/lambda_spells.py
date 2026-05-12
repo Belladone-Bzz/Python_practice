@@ -8,7 +8,8 @@ This is done using lambda expressions.
 """
 
 
-def artifact_sorter(artifacts: list[dict]) -> list[dict]:
+def artifact_sorter(
+        artifacts: list[dict[str, str | int]]) -> list[dict[str, str | int]]:
     """This function sort magical artifacts using lambda expression."""
     print("\nTesting artifact sorter...")
     print("=" * 40)
@@ -24,18 +25,20 @@ def artifact_sorter(artifacts: list[dict]) -> list[dict]:
     return sorted_artifacts
 
 
-def power_filter(mages: list[dict], min_power: int) -> list[dict]:
+def power_filter(
+        mages: list[dict[str, str | int]],
+        min_power: int) -> list[dict[str, str | int]]:
     """This function filter mages by power using lambda expression."""
     print("\nTesting mage filter...")
     print("=" * 40)
     print("Initial mages:")
-    for mage in mages:
-        print(f"{mage["name"]} ({mage["power"]} power)")
-    filtered_mages = list(filter(lambda mage: mage["power"] >=
-                                 min_power, mages))
+    for caster in mages:
+        print(f"{caster["name"]} ({caster["power"]} power)")
+    filtered_mages: list[dict[str, str | int]] = list(filter(
+        lambda mage: int(mage.get("power", 0)) >= min_power, mages))
     print("\nFiltered mages:")
-    for mage in filtered_mages:
-        print(f"{mage["name"]} ({mage["power"]} power)")
+    for caster in filtered_mages:
+        print(f"{caster["name"]} ({caster["power"]} power)")
     print("=" * 40)
     return filtered_mages
 
@@ -48,21 +51,22 @@ def spell_transformer(spells: list[str]) -> list[str]:
     for spell in spells:
         print(spell)
     transformed_spells = list(map(lambda spell: f"* {spell} *", spells))
-    print("\nTrasnformed spells:")
+    print("\nTransformed spells:")
     for spell in transformed_spells:
         print(spell)
     print("=" * 40)
     return transformed_spells
 
 
-def mage_stats(mages: list[dict]) -> dict:
+def mage_stats(mages: list[dict[str, str | int]]) -> dict[str, float]:
     """This function calculate statistic unsing lambda expression."""
     print("\nStatistic for mages:")
     print("=" * 40)
-    stats: dict = {
-        "max_power": max(mages, key=lambda mage: mage["power"])["power"],
-        "min_power": min(mages, key=lambda mage: mage["power"])["power"],
-        "avg_power": sum(map(lambda mage: mage["power"], mages)) / len(mages)
+    stats: dict[str, float] = {
+        "max_power": int(max(mages, key=lambda mage: mage["power"])["power"]),
+        "min_power": int(min(mages, key=lambda mage: mage["power"])["power"]),
+        "avg_power": sum(map(
+            lambda mage: int(mage["power"]), mages)) / len(mages)
     }
     print(f"Power max: {stats["max_power"]}")
     print(f"Power min: {stats["min_power"]}")
@@ -73,12 +77,12 @@ def mage_stats(mages: list[dict]) -> dict:
 
 def main() -> None:
     """Entry point of the program"""
-    artifacts: list[dict] = [
+    artifacts: list[dict[str, str | int]] = [
         {"name": "Sacred Sword", "power": 12, "type": "sacred"},
         {"name": "Monolith", "power": 25, "type": "evil"},
         {"name": "Luminous Ring", "power": 14, "type": "fairy"}]
     artifact_sorter(artifacts)
-    mages: list[dict] = [
+    mages: list[dict[str, str | int]] = [
         {"name": "Dark Yannou", "power": 15, "element": "Darkness"},
         {"name": "La Stige", "power": 10, "element": "Grass"},
         {"name": "La Gige", "power": 12, "element": "Earth"},

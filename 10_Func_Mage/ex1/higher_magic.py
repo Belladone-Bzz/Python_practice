@@ -7,6 +7,7 @@ Description: This program create a spell-crafting system where functions can
 modify, combine, and enhance other functions. This is done using callable().
 """
 from collections.abc import Callable
+from typing import Any
 
 
 def heal(target: str, power: int) -> str:
@@ -26,14 +27,14 @@ def sacred_wall(target: str, power: int) -> str:
 
 def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
     """Function to combine two spells."""
-    def combined(target: str, power: int) -> tuple:
+    def combined(target: str, power: int) -> tuple[str, str]:
         return (spell1(target, power), spell2(target, power))
     return combined
 
 
 def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
     """Function to amplify the power of a spell."""
-    def amplified(target: str, power: int) -> str:
+    def amplified(target: str, power: int) -> Any:
         return (base_spell(target, (power * multiplier)))
     return amplified
 
@@ -47,7 +48,7 @@ def is_powerfull(target: str, power: int) -> bool:
 
 def conditional_caster(condition: Callable, spell: Callable) -> Callable:
     """Function to cast a spell if condition is true."""
-    def conditional_spell(target: str, power: int) -> str:
+    def conditional_spell(target: str, power: int) -> Any:
         if condition(target, power) is True:
             return (spell(target, power))
         else:
@@ -57,7 +58,7 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
 
 def spell_sequence(spells: list[Callable]) -> Callable:
     """Function to cast a list of spells."""
-    def sequence(target: str, power: int) -> list:
+    def sequence(target: str, power: int) -> list[str]:
         return [spell(target, power) for spell in spells]
     return sequence
 

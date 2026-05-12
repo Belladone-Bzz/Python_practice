@@ -8,6 +8,7 @@ methods.
 """
 from functools import wraps
 from collections.abc import Callable
+from typing import Any
 import time
 import random
 
@@ -29,8 +30,10 @@ def power_validator(min_power: int) -> Callable:
     """Decorator that validates power lever to cast a spell."""
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args: object, **kwargs: object) -> object:
-            power = kwargs.get("power", args[1] if len(args) > 1 else 0)
+        def wrapper(*args: tuple[object], **kwargs: dict[str, object]) -> Any:
+            power = int(str(kwargs.get(
+                "power",
+                args[1] if len(args) > 2 else args[0] if args else 0)))
             if power < min_power:
                 return "Insufficient power for this spell"
             return func(power, *args, **kwargs)
@@ -42,7 +45,7 @@ def retry_spell(max_attempts: int) -> Callable:
     """Decorator that retries failed spells."""
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args: object, **kwargs: object) -> object:
+        def wrapper(*args: tuple[object], **kwargs: dict[str, object]) -> Any:
             for attempt in range(1, max_attempts + 1):
                 try:
                     return func(*args, **kwargs)
@@ -62,10 +65,10 @@ class MageGuild:
         """Method to validate mage name. Valid if >= 3 chars and letters/spaces
         only.
         """
-        if len(name >= 3) and name.replace(" ", "").isalpha:
+        if len(name) >= 3 and name.replace(" ", "").isalpha():
             return True
         return False
-    
+
     @power_validator(min_power=10)
     def cast_spell(self, power: int, spell_name: str) -> str:
         """Method with power validator decorator."""
@@ -95,7 +98,13 @@ def main() -> None:
     print("\nTesting retrying spell...")
     print("=" * 40)
     print(random_spell())
-
+    print("\nTesting MageGuild...")
+    print("=" * 40)
+    mage = MageGuild
+    print(mage.validate_mage_name("Yannou le Dark"))
+    print(mage.validate_mage_name("Ab"))
+    print(mage.cast_spell(power=15, spell_name="Lightning"))
+    print(mage.cast_spell(9, "fireball"))
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ Description: This program uses lexical scoping to "remember" variables from
 their creation environment. It creates then persistant magical effects.
 """
 from collections.abc import Callable
+from typing import Any
 
 
 def mage_counter() -> Callable:
@@ -42,10 +43,10 @@ def memory_vault() -> dict[str, Callable]:
     """Function to create a memory system management."""
     storage: dict[str, Callable] = {}
 
-    def store(key: str, value) -> None:
+    def store(key: str, value: Any) -> None:
         storage[key] = value
 
-    def recall(key: str):
+    def recall(key: str) -> Any:
         return storage.get(key, "Memory not found")
     return {"store": store, "recall": recall}
 

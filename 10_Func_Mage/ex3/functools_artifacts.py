@@ -34,8 +34,7 @@ def base_enchantment(power: int, element: str, target: str) -> str:
 
 
 def partial_enchanter(
-        base_enchantment: Callable[..., str]
-        ) -> dict[str, Callable[..., str]]:
+        base_enchantment: Callable) -> dict[str, Callable]:
     """Function to create 3 specialized versions of base_enchantment with
     partial.
     """
@@ -61,7 +60,7 @@ def memoized_fibonacci(n: int) -> int:
     return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
-def spell_dispatcher() -> Callable[[Any], str]:
+def spell_dispatcher() -> Callable:
     """Function to create a spell system using dispatch."""
     @singledispatch
     def spell_system(spell: Any) -> str:
